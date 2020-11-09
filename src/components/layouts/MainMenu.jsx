@@ -1,8 +1,9 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
+import AuthorizedFunction from "../../utilities/AuthorizedFunction";
 
-import { Menu } from "antd";
+import { Menu, Button } from "antd";
 import {
   HomeOutlined,
   UserOutlined,
@@ -27,20 +28,20 @@ const MainMenu = withRouter((props) => {
           <UserOutlined className="mx-auto" />
         </Link>
       </Menu.Item>
-      <Menu.Item key="/macros">
-        <Link to="/macros">
-          <FundViewOutlined className="mx-auto" />
-        </Link>
-      </Menu.Item>
+      {AuthorizedFunction(["RealmAdmin"]) && (
+        <Menu.Item key="/macros">
+          <Link to="/macros">
+            <FundViewOutlined className="mx-auto" />
+          </Link>
+        </Menu.Item>
+      )}
       <Menu.Item style={{ float: "right" }}>
         {keycloak && keycloak.authenticated ? (
-          <a href="#" onClick={() => keycloak.logout()}>
+          <Button onClick={() => keycloak.logout()}>
             Déconnexion ({keycloak.tokenParsed.preferred_username}){" "}
-          </a>
+          </Button>
         ) : (
-          <a href="#" onClick={() => keycloak.login()}>
-            Connexion
-          </a>
+          <Button onClick={() => keycloak.login()}>Connexion</Button>
         )}
       </Menu.Item>
     </Menu>

@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
+import { PrivateRoute } from "./utilities/PrivateRoute";
 
 import Home from "./pages/Home";
 import Clients from "./pages/Clients";
@@ -8,7 +9,7 @@ import NotFound from "./pages/404";
 import Macros from "./pages/Macros";
 
 const AppRoute = () => {
-  const { keycloak, initialized } = useKeycloak();
+  const { initialized } = useKeycloak();
   if (!initialized) {
     return <p>Chargement...</p>;
   }
@@ -18,7 +19,11 @@ const AppRoute = () => {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/clients" component={Clients} />
-        <Route path="/macros" component={Macros} />
+        <PrivateRoute
+          roles={["RealmAdmin"]}
+          path="/macros"
+          component={Macros}
+        />
         <Route default component={NotFound} />
       </Switch>
     </Router>
