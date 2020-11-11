@@ -1,54 +1,50 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import { useKeycloak } from "@react-keycloak/web";
 import AuthorizedFunction from "../../utilities/AuthorizedFunction";
 
-import { Menu, Button } from "antd";
+import { Menu, Layout } from "antd";
 import {
   HomeOutlined,
   UserOutlined,
   FundViewOutlined,
 } from "@ant-design/icons";
 
+const { Sider } = Layout;
+
 const MainMenu = withRouter((props) => {
-  const { keycloak, initialized } = useKeycloak();
   const { location } = props;
 
-  if (!initialized) return <p>Chargement...</p>;
-
   return (
-    <Menu mode="horizontal" selectedKeys={[location.pathname]}>
-      <Menu.Item key="/">
-        <Link to="/">
-          <HomeOutlined className="mx-auto" />
-        </Link>
-      </Menu.Item>
-      {AuthorizedFunction(["RealmAdmin"]) && (
-        <>
-          <Menu.Item key="/clients">
-            <Link to="/clients">
-              <UserOutlined className="mx-auto" />
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="/macros">
-            <Link to="/macros">
-              <FundViewOutlined className="mx-auto" />
-            </Link>
-          </Menu.Item>
-        </>
-      )}
-      <Menu.Item style={{ float: "right" }}>
-        {keycloak && keycloak.authenticated ? (
-          <Button type="ghost" onClick={() => keycloak.logout()}>
-            Déconnexion ({keycloak.tokenParsed.preferred_username}){" "}
-          </Button>
-        ) : (
-          <Button type="ghost" onClick={() => keycloak.login()}>
-            Connexion
-          </Button>
+    <Sider collapsed width="5vw">
+      <Menu
+        mode="inline"
+        selectedKeys={[location.pathname]}
+        style={{ height: "inherit" }}
+      >
+        <Menu.Item key="/">
+          <Link to="/">
+            <HomeOutlined />
+            <span>Accueil</span>
+          </Link>
+        </Menu.Item>
+        {AuthorizedFunction(["RealmAdmin"]) && (
+          <>
+            <Menu.Item key="/clients">
+              <Link to="/clients">
+                <UserOutlined className="mx-auto" />
+                <span>Suivi clients</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/macros">
+              <Link to="/macros">
+                <FundViewOutlined className="mx-auto" />
+                <span>Calculateur macros</span>
+              </Link>
+            </Menu.Item>
+          </>
         )}
-      </Menu.Item>
-    </Menu>
+      </Menu>
+    </Sider>
   );
 });
 

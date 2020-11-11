@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Space } from "antd";
+import { Table, Space, Button } from "antd";
 import clientsData from "../../../data/clients.json";
 const { Column } = Table;
 
@@ -17,8 +17,10 @@ const TabClients = () => {
         key="action"
         render={(text, record) => (
           <Space size="middle">
-            <a>Contacter {record.firstname}</a>
-            <a>Supprimer</a>
+            <Button type="link">Contacter {record.firstname}</Button>
+            <Button type="link" danger>
+              Supprimer
+            </Button>
           </Space>
         )}
       />

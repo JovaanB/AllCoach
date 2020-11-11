@@ -1,13 +1,33 @@
 import React from "react";
 import MainMenu from "./MainMenu";
+import MainHeader from "./components/Header";
+import { Layout } from "antd";
 
-const Layout = (props) => {
+const { Footer, Content } = Layout;
+
+const MainLayout = (props) => {
   return (
-    <>
-      <MainMenu />
-      <div className="pt-2 container-fluid">{props.children}</div>
-    </>
+    <div className="App">
+      <Layout>
+        <MainHeader />
+        <Layout>
+          <MainMenu />
+          <Layout>
+            <Content style={{ padding: "0 50px" }}>
+              <div
+                style={{ background: "#fff", padding: 24, minHeight: "90vh" }}
+              >
+                {props.children}
+              </div>
+            </Content>
+            <Footer style={{ textAlign: "center" }}>
+              Jovan Bienvenu 2020-2021
+            </Footer>
+          </Layout>
+        </Layout>
+      </Layout>
+    </div>
   );
 };
 
-export default Layout;
+export default MainLayout;
